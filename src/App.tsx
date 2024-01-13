@@ -214,6 +214,36 @@ function App() {
     }, 1000); // Check every second
 
   };
+
+  const handleSecondaryTraficButtonClick = () => {
+    // Save the current state of all lights
+    const originalState = {
+      secondary: secondaryRoadLight,
+      secondaryYellow: secondaryYellowLight,
+      main: mainRoadLight,
+      mainYellow: mainYellowLight,
+    };
+  
+    // Set new states for the lights
+    setPedestrianRoadLight('red');
+    setSecondaryRoadLight('green');
+    setSecondaryYellowRoadLight('red');
+    setMainRoadLight('red');
+    setMainYellowLight('yellow');
+  
+    // Revert to the original states after 5 second
+    setTimeout(() => {
+      setSecondaryYellowRoadLight('yellow');
+      setMainYellowLight('yellow');
+      setTimeout(() => {
+        setSecondaryYellowRoadLight(originalState.secondaryYellow);
+        setMainYellowLight(originalState.mainYellow);
+        setSecondaryRoadLight(originalState.secondary);
+        setMainRoadLight(originalState.main);
+      }, 1000);
+    }, 5000);
+  };
+  
   
 
   return (
@@ -339,7 +369,7 @@ function App() {
         {/* Button for pedestrian/secundary road */}
         <Grid container spacing={0} >
           <Grid item xs={6} >
-              <Button variant="contained">
+              <Button variant="contained" onClick={handleSecondaryTraficButtonClick}>
                 Toggle Secundary Road Light
               </Button>
           </Grid>
