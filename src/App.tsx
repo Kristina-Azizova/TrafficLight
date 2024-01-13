@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -7,6 +7,9 @@ import Button from '@mui/material/Button';
 import Colors from './components/Colors';
 import './App.css';
 
+interface TrafficLightDotProps {
+  color: string;
+}
 
 const TrafficLightLeft = styled(Box)({
   writingMode: 'vertical-lr',
@@ -19,7 +22,7 @@ const TrafficLightRight = styled(Box)({
 const TrafficLightVertical = styled(Box)({
 });
 
-const TrafficLightDot = styled('div')(({ theme, color }) => ({
+const TrafficLightDot = styled('div')<TrafficLightDotProps>(({ theme, color }) => ({
   width: '15px',
   height: '15px',
   borderRadius: '50%',
@@ -130,16 +133,16 @@ const WhiteColumnHalfVertical = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
-function App() {
-  const [mainRoadLight, setMainRoadLight] = useState('green');
-  const [secondaryRoadLight, setSecondaryRoadLight] = useState('red');
-  const [pedestrianRoadLight, setPedestrianRoadLight] = useState('red');
-  const [mainYellowLight, setMainYellowLight] = useState('green');
-  const [secondaryYellowLight, setSecondaryYellowRoadLight] = useState('green');
-  const mainRoadLightRef = useRef(mainRoadLight);
-  const secondaryRoadLightRef = useRef(secondaryRoadLight);
-  const secondaryYellowLightRef = useRef(secondaryYellowLight);
-  const mainYellowLightRef = useRef(mainYellowLight);
+const App: FC = () => {
+  const [mainRoadLight, setMainRoadLight] = useState<string>('green');
+  const [secondaryRoadLight, setSecondaryRoadLight] = useState<string>('red');
+  const [pedestrianRoadLight, setPedestrianRoadLight] = useState<string>('red');
+  const [mainYellowLight, setMainYellowLight] = useState<string>('green');
+  const [secondaryYellowLight, setSecondaryYellowRoadLight] = useState<string>('green');
+  const mainRoadLightRef = useRef<string>(mainRoadLight);
+  const secondaryRoadLightRef = useRef<string>(secondaryRoadLight);
+  const secondaryYellowLightRef = useRef<string>(secondaryYellowLight);
+  const mainYellowLightRef = useRef<string>(mainYellowLight);
 
   useEffect(() => {
     mainRoadLightRef.current = mainRoadLight;
@@ -147,27 +150,27 @@ function App() {
     secondaryYellowLightRef.current = secondaryYellowLight;
     mainYellowLightRef.current = mainYellowLight;
 
-  // Toggle traffic light colors for main road every 20 seconds
-  const mainRoadIntervalId = setInterval(() => {
-    setMainYellowLight('yellow');
-    setMainRoadLight('yellow');
-    setTimeout(() => {
-      setMainRoadLight('red');
-      setMainYellowLight('red');
+    // Toggle traffic light colors for main road every 20 seconds
+    const mainRoadIntervalId = setInterval(() => {
+      setMainYellowLight('yellow');
+      setMainRoadLight('yellow');
+      setTimeout(() => {
+        setMainRoadLight('red');
+        setMainYellowLight('red');
         setTimeout(() => {
           setMainYellowLight('yellow');
-            setTimeout(() => {
-                setMainRoadLight('green');
-                setMainYellowLight('green');
-            }, 2000);
-        }, 17000); // Switch to red after 5 seconds
-    }, 1000); // Switch to yellow after 5 seconds
-  }, 20000);
+          setTimeout(() => {
+            setMainRoadLight('green');
+            setMainYellowLight('green');
+          }, 2000);
+        }, 17000); 
+      }, 1000); 
+    }, 20000);
 
-   // Toggle traffic light colors for secondary road every 20 seconds
-  const secondaryRoadIntervalId = setInterval(() => {
-    setSecondaryYellowRoadLight('yellow');
-    setTimeout(() => {
+    // Toggle traffic light colors for secondary road every 20 seconds
+    const secondaryRoadIntervalId = setInterval(() => {
+      setSecondaryYellowRoadLight('yellow');
+      setTimeout(() => {
         setSecondaryYellowRoadLight('green');
         setSecondaryRoadLight('green');
         setTimeout(() => {
@@ -176,17 +179,17 @@ function App() {
           setTimeout(() => {
             setSecondaryRoadLight('red');
             setSecondaryYellowRoadLight('red');
-          }, 1000); 
-        }, 5000); // Switch to red after 5 seconds
-    }, 2000); // Switch to yellow after 5 seconds
-  }, 20000);
+          }, 1000);
+        }, 5000); 
+      }, 2000); 
+    }, 20000);
 
     // Cleanup intervals when component unmounts
     return () => {
       clearInterval(mainRoadIntervalId);
       clearInterval(secondaryRoadIntervalId);
     };
-  }, [mainRoadLight, secondaryRoadLight,mainYellowLight, secondaryYellowLight]);
+  }, [mainRoadLight, secondaryRoadLight, mainYellowLight, secondaryYellowLight]);
 
   const handlePedestrianButtonClick = () => {
     const clearLightsInterval = () => {
@@ -194,24 +197,20 @@ function App() {
     };
 
     const checkLightsInterval = setInterval(() => {
-      if ( mainRoadLightRef.current === 'red' && secondaryRoadLightRef.current === 'red') {
-          console.log('Current Main Road Light:', mainRoadLightRef.current , secondaryRoadLightRef.current);
-          if (secondaryYellowLightRef.current !== 'yellow' && mainYellowLightRef.current !== 'yellow' ) {
-            // Set pedestrian light to green only if secondaryYellowLight is not yellow
-            setPedestrianRoadLight('green');
-      
-            // Keep pedestrian light green for 3 seconds
-            setTimeout(() => {
-              setPedestrianRoadLight('red');
-              clearLightsInterval();
-            }, 3000);
-          }
-          
+      if (mainRoadLightRef.current === 'red' && secondaryRoadLightRef.current === 'red') {
+        console.log('Current Main Road Light:', mainRoadLightRef.current, secondaryRoadLightRef.current);
+        if (secondaryYellowLightRef.current !== 'yellow' && mainYellowLightRef.current !== 'yellow') {
+          setPedestrianRoadLight('green');
+          // Keep pedestrian light green for 3 seconds
+          setTimeout(() => {
+            setPedestrianRoadLight('red');
+            clearLightsInterval();
+          }, 3000);
+        }
       } else {
-        // Stop the green light if the traffic lights change
         setPedestrianRoadLight('red');
       }
-    }, 1000); // Check every second
+    }, 1000);
 
   };
 
@@ -223,14 +222,14 @@ function App() {
       main: mainRoadLight,
       mainYellow: mainYellowLight,
     };
-  
+
     // Set new states for the lights
     setPedestrianRoadLight('red');
     setSecondaryRoadLight('green');
     setSecondaryYellowRoadLight('red');
     setMainRoadLight('red');
     setMainYellowLight('yellow');
-  
+
     // Revert to the original states after 5 second
     setTimeout(() => {
       setSecondaryYellowRoadLight('yellow');
@@ -243,135 +242,133 @@ function App() {
       }, 1000);
     }, 5000);
   };
-  
-  
 
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
         {/* First Row */}
         <Grid container spacing={0} >
-        <Grid item xs={5}>
-          <ItemWhite />
-        </Grid>
-        <Grid item xs={2} >
-        <ItemWhite />
-        </Grid>
-        <Grid item xs={1} >
-        <ItemWhite id='TraficLightPedestrianRight' className='tl-pedestrian-top'>
-          <TrafficLightLeft
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection={{ sm: 'row' }}>
+          <Grid item xs={5}>
+            <ItemWhite />
+          </Grid>
+          <Grid item xs={2} >
+            <ItemWhite />
+          </Grid>
+          <Grid item xs={1} >
+            <ItemWhite id='TraficLightPedestrianRight' className='tl-pedestrian-top'>
+              <TrafficLightLeft
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection={{ sm: 'row' }}>
                 <TrafficLightDot color={pedestrianRoadLight === 'red' ? Colors.RED : Colors.DARK_RED} />
                 <TrafficLightDot color={pedestrianRoadLight === 'green' ? Colors.GREEN : Colors.DARK_GREEN} />
-          </TrafficLightLeft>
-          </ItemWhite>
-        </Grid>
-        <Grid item xs={4} className='traffic-row-top' >
-        <ItemWhite id='SideRoadTrafficLightRight' className='traffic-light-left'>
-          <TrafficLightLeft
-          display="flex"
-          justifyContent="center"
-          alignItems="flex-start"
-          flexDirection={{ sm: 'column' }}>
+              </TrafficLightLeft>
+            </ItemWhite>
+          </Grid>
+          <Grid item xs={4} className='traffic-row-top' >
+            <ItemWhite id='SideRoadTrafficLightRight' className='traffic-light-left'>
+              <TrafficLightLeft
+                display="flex"
+                justifyContent="center"
+                alignItems="flex-start"
+                flexDirection={{ sm: 'column' }}>
                 <TrafficLightDot color={mainRoadLight === 'red' ? Colors.RED : Colors.DARK_RED} />
                 <TrafficLightDot color={mainYellowLight === 'yellow' ? Colors.YELLOW : Colors.DARK_YELLOW} />
                 <TrafficLightDot color={mainRoadLight === 'green' ? Colors.GREEN : Colors.DARK_GREEN} />
-          </TrafficLightLeft>
-          </ItemWhite>
-        </Grid>
+              </TrafficLightLeft>
+            </ItemWhite>
+          </Grid>
         </Grid>
         {/* Second Row */}
         <Grid container spacing={0} >
-        <Grid item xs={4} >
-          <Item >Hauptstraße</Item>
-        </Grid>
-        <Grid item xs={1} >
-          <ItemWithLineHalf className='right-column'>
-            <WhiteColumnHalf className='half-column' item xs={1} ></WhiteColumnHalf>
-          </ItemWithLineHalf>
-        </Grid>
-        <Grid item xs={2} >
-        <ItemGrey />
-        </Grid>
-        <Grid item xs={1}>
-          <ItemWithLine className='pedestrian-box'>
-            <WhiteColumn item xs={12} >Fußgängerüberweg</WhiteColumn>
-          </ItemWithLine>
-        </Grid>
-        <Grid item xs={1} >
-          <ItemWithLineHalf className='left-column'>
-            <WhiteColumnHalf className='half-column' item xs={1} ></WhiteColumnHalf>
-          </ItemWithLineHalf>
-        </Grid>
-        <Grid item xs={3} >
-          <Item />
-        </Grid>
+          <Grid item xs={4} >
+            <Item >Hauptstraße</Item>
+          </Grid>
+          <Grid item xs={1} >
+            <ItemWithLineHalf className='right-column'>
+              <WhiteColumnHalf className='half-column' item xs={1} ></WhiteColumnHalf>
+            </ItemWithLineHalf>
+          </Grid>
+          <Grid item xs={2} >
+            <ItemGrey />
+          </Grid>
+          <Grid item xs={1}>
+            <ItemWithLine className='pedestrian-box'>
+              <WhiteColumn item xs={12} >Fußgängerüberweg</WhiteColumn>
+            </ItemWithLine>
+          </Grid>
+          <Grid item xs={1} >
+            <ItemWithLineHalf className='left-column'>
+              <WhiteColumnHalf className='half-column' item xs={1} ></WhiteColumnHalf>
+            </ItemWithLineHalf>
+          </Grid>
+          <Grid item xs={3} >
+            <Item />
+          </Grid>
         </Grid>
         {/* Third Row */}
         <Grid container spacing={0} >
-        <Grid item xs={5} >
-        <ItemWhite id='MainRoadTrafficLightRight' className='traffic-light-right'>
-          <TrafficLightRight
-          display="flex"
-          justifyContent="center"
-          alignContent="flex-end"
-          flexDirection={{ sm: 'column' }}>
+          <Grid item xs={5} >
+            <ItemWhite id='MainRoadTrafficLightRight' className='traffic-light-right'>
+              <TrafficLightRight
+                display="flex"
+                justifyContent="center"
+                alignContent="flex-end"
+                flexDirection={{ sm: 'column' }}>
                 <TrafficLightDot color={mainRoadLight === 'red' ? Colors.RED : Colors.DARK_RED} />
                 <TrafficLightDot color={mainYellowLight === 'yellow' ? Colors.YELLOW : Colors.DARK_YELLOW} />
                 <TrafficLightDot color={mainRoadLight === 'green' ? Colors.GREEN : Colors.DARK_GREEN} />
-          </TrafficLightRight>
-          </ItemWhite>
-        </Grid>
-        <Grid item
-          xs={2}
-          container
-          justifyContent="center"
-          alignItems="center"
-          flexDirection={{ sm: 'column' }}
-          className="verticalRow">
-          <ItemVertical className='verticalStreet'>
-            <div className='vertical-box'>
-            <ItemWithLineHalf className='vertical-column'>
-              <WhiteColumnHalfVertical className='half-column vertical-half-column' item xs={1} ></WhiteColumnHalfVertical>
-            </ItemWithLineHalf>
-            </div>
-            <div className='p-xs'>Nebenstraße</div>
-          </ItemVertical>
-        </Grid>
-        <Grid item>
-          <ItemWhite id='SecondaryRoadTrafficLightRight' className='traffic-light-vertical'>
-            <TrafficLightVertical>
+              </TrafficLightRight>
+            </ItemWhite>
+          </Grid>
+          <Grid item
+            xs={2}
+            container
+            justifyContent="center"
+            alignItems="center"
+            flexDirection={{ sm: 'column' }}
+            className="verticalRow">
+            <ItemVertical className='verticalStreet'>
+              <div className='vertical-box'>
+                <ItemWithLineHalf className='vertical-column'>
+                  <WhiteColumnHalfVertical className='half-column vertical-half-column' item xs={1} ></WhiteColumnHalfVertical>
+                </ItemWithLineHalf>
+              </div>
+              <div className='p-xs'>Nebenstraße</div>
+            </ItemVertical>
+          </Grid>
+          <Grid item>
+            <ItemWhite id='SecondaryRoadTrafficLightRight' className='traffic-light-vertical'>
+              <TrafficLightVertical>
                 <TrafficLightDot color={secondaryRoadLight === 'red' ? Colors.RED : Colors.DARK_RED} />
                 <TrafficLightDot color={secondaryYellowLight === 'yellow' ? Colors.YELLOW : Colors.DARK_YELLOW} />
                 <TrafficLightDot color={secondaryRoadLight === 'green' ? Colors.GREEN : Colors.DARK_GREEN} />
-            </TrafficLightVertical>
-          </ItemWhite>
-        </Grid>
-        <Grid item xs={1} >
-        <ItemWhite id='TraficLightPedestrianLeft' className='tl-pedestrian-bottom'>
-          <TrafficLightLeft
-          display="flex"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          flexDirection={{ sm: 'row' }}>
+              </TrafficLightVertical>
+            </ItemWhite>
+          </Grid>
+          <Grid item xs={1} >
+            <ItemWhite id='TraficLightPedestrianLeft' className='tl-pedestrian-bottom'>
+              <TrafficLightLeft
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                flexDirection={{ sm: 'row' }}>
                 <TrafficLightDot color={pedestrianRoadLight === 'red' ? Colors.RED : Colors.DARK_RED} />
                 <TrafficLightDot color={pedestrianRoadLight === 'green' ? Colors.GREEN : Colors.DARK_GREEN} />
-          </TrafficLightLeft>
-          </ItemWhite>
-        </Grid>
-        <Grid item xs={3} >
-          <ItemWhite />
-        </Grid>
+              </TrafficLightLeft>
+            </ItemWhite>
+          </Grid>
+          <Grid item xs={3} >
+            <ItemWhite />
+          </Grid>
         </Grid>
         {/* Button for pedestrian/secundary road */}
         <Grid container spacing={0} >
           <Grid item xs={6} >
-              <Button variant="contained" onClick={handleSecondaryTraficButtonClick}>
-                Toggle Secundary Road Light
-              </Button>
+            <Button variant="contained" onClick={handleSecondaryTraficButtonClick}>
+              Toggle Secundary Road Light
+            </Button>
           </Grid>
           <Grid item xs={6} >
             <Button variant="contained" onClick={handlePedestrianButtonClick}>
@@ -379,7 +376,7 @@ function App() {
             </Button>
           </Grid>
         </Grid>
-    </Box>
+      </Box>
     </div>
   );
 }
