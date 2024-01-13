@@ -1,0 +1,108 @@
+.App {
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.verticalStreet {
+  width: 146px;
+  height: 300px!important;
+}
+.verticalRow {
+  height: 300px;
+}
+
+.traffic-row-top{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.traffic-light-left{
+  align-items: flex-start;
+}
+
+.tl-pedestrian-top{
+  align-items: center;
+  justify-content: center;
+}
+
+.tl-pedestrian-bottom{
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 20px;
+}
+
+.traffic-light-right{
+  justify-content: flex-end;
+}
+.traffic-light-vertical{
+  margin-left: -20px;
+  margin-top: 16px;
+}
+.half-column{
+  border-radius: 5px;
+}
+.vertical-column{
+  position: absolute;
+  writing-mode: vertical-lr;
+}
+
+.vertical-half-column{
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.right-column{
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.left-column{
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.vertical-box{
+  position: relative;
+  padding-top: 20px;
+}
+.p-xs{
+  padding: 8px 8px 20px;
+}
+
+.pedestrian-box{
+  padding-left: 25px!important;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
