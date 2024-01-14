@@ -31,11 +31,11 @@ const TrafficLightDot = styled('div')<TrafficLightDotProps>(({ theme, color }) =
 
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'grey',
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
-  color: '#fff',
+  color: Colors.TEXT,
   boxShadow: 'none',
   borderRadius: 0,
   height: '130px',
@@ -46,16 +46,16 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemGrey = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'grey',
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
-  color: '#fff',
+  color: Colors.TEXT,
   boxShadow: 'none',
   borderRadius: 0,
   display: 'flex',
   height: '100%',
-  flexDirection: 'column', // Set the flex direction to column
+  flexDirection: 'column', 
   justifyContent: 'center',
   alignItems: 'center',
 }));
@@ -65,18 +65,18 @@ const ItemWhite = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
-  color: '#fff',
+  color: Colors.TEXT,
   boxShadow: 'none',
   borderRadius: 0,
   display: 'flex'
 }));
 
 const ItemVertical = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'grey',
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
-  color: '#fff',
+  color: Colors.TEXT,
   boxShadow: 'none',
   borderRadius: 0,
   height: '130px',
@@ -87,7 +87,7 @@ const ItemVertical = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemWithLine = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'grey',
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
@@ -107,7 +107,7 @@ const WhiteColumn = styled(Grid)(({ theme }) => ({
 }));
 
 const ItemWithLineHalf = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'grey',
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
@@ -152,6 +152,7 @@ const App: FC = () => {
 
     // Toggle traffic light colors for main road every 20 seconds
     const mainRoadIntervalId = setInterval(() => {
+      console.log('MainRoadLight: ' + mainRoadLight);
       setMainYellowLight('yellow');
       setMainRoadLight('yellow');
       setTimeout(() => {
@@ -169,6 +170,7 @@ const App: FC = () => {
 
     // Toggle traffic light colors for secondary road every 20 seconds
     const secondaryRoadIntervalId = setInterval(() => {
+      console.log('SecondaryRoadLight: ' + secondaryRoadLight);
       setSecondaryYellowRoadLight('yellow');
       setTimeout(() => {
         setSecondaryYellowRoadLight('green');
@@ -197,8 +199,10 @@ const App: FC = () => {
     };
 
     const checkLightsInterval = setInterval(() => {
+      //console.log('MainRoadLight: ' + mainRoadLight);
+      //console.log('SecondaryRoadLight: ' + secondaryRoadLight);
       if (mainRoadLightRef.current === 'red' && secondaryRoadLightRef.current === 'red') {
-        console.log('Current Main Road Light:', mainRoadLightRef.current, secondaryRoadLightRef.current);
+        //console.log('Current Main Road Light:', mainRoadLightRef.current, secondaryRoadLightRef.current);
         if (secondaryYellowLightRef.current !== 'yellow' && mainYellowLightRef.current !== 'yellow') {
           setPedestrianRoadLight('green');
           // Keep pedestrian light green for 3 seconds
@@ -228,7 +232,7 @@ const App: FC = () => {
     setSecondaryRoadLight('green');
     setSecondaryYellowRoadLight('red');
     setMainRoadLight('red');
-    setMainYellowLight('yellow');
+    setMainYellowLight('red');
 
     // Revert to the original states after 5 second
     setTimeout(() => {
@@ -240,7 +244,7 @@ const App: FC = () => {
         setSecondaryRoadLight(originalState.secondary);
         setMainRoadLight(originalState.main);
       }, 1000);
-    }, 5000);
+    }, 3000);
   };
 
   return (
@@ -363,11 +367,11 @@ const App: FC = () => {
             <ItemWhite />
           </Grid>
         </Grid>
-        {/* Button for pedestrian/secundary road */}
+        {/* Button for pedestrian/secondary road */}
         <Grid container spacing={0} >
           <Grid item xs={6} >
             <Button variant="contained" onClick={handleSecondaryTraficButtonClick}>
-              Toggle Secundary Road Light
+              Toggle Secondary Road Light
             </Button>
           </Grid>
           <Grid item xs={6} >
