@@ -22,7 +22,7 @@ const TrafficLightRight = styled(Box)({
 const TrafficLightVertical = styled(Box)({
 });
 
-const TrafficLightDot = styled('div')<TrafficLightDotProps>(({ theme, color }) => ({
+const TrafficLightDot = styled('div')<TrafficLightDotProps>(({ color }) => ({
   width: '15px',
   height: '15px',
   borderRadius: '50%',
@@ -31,7 +31,7 @@ const TrafficLightDot = styled('div')<TrafficLightDotProps>(({ theme, color }) =
 
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
+  backgroundColor: Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -46,7 +46,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemGrey = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
+  backgroundColor: Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
@@ -72,7 +72,7 @@ const ItemWhite = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemVertical = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
+  backgroundColor: Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
@@ -87,7 +87,7 @@ const ItemVertical = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemWithLine = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
+  backgroundColor: Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
@@ -107,7 +107,7 @@ const WhiteColumn = styled(Grid)(({ theme }) => ({
 }));
 
 const ItemWithLineHalf = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : Colors.GREY,
+  backgroundColor: Colors.GREY,
   ...theme.typography.body2,
   padding: theme.spacing(0),
   textAlign: 'center',
