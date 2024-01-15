@@ -1,9 +1,6 @@
 import React, { FC, useState, useEffect, useRef } from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import {Box, Paper, Grid, Button} from '@mui/material';
 import Colors from './components/Colors';
 import './App.css';
 
@@ -153,37 +150,37 @@ const App: FC = () => {
     // Toggle traffic light colors for main road every 20 seconds
     const mainRoadIntervalId = setInterval(() => {
       console.log('MainRoadLight: ' + mainRoadLight);
-      setMainYellowLight('yellow');
-      setMainRoadLight('yellow');
-      setTimeout(() => {
-        setMainRoadLight('red');
-        setMainYellowLight('red');
+        setMainYellowLight('yellow');
+        setMainRoadLight('yellow');
         setTimeout(() => {
-          setMainYellowLight('yellow');
+          setMainRoadLight('red');
+          setMainYellowLight('red');
           setTimeout(() => {
-            setMainRoadLight('green');
-            setMainYellowLight('green');
-          }, 2000);
-        }, 17000); 
-      }, 1000); 
+            setMainYellowLight('yellow');
+            setTimeout(() => {
+              setMainRoadLight('green');
+              setMainYellowLight('green');
+            }, 2000);
+          }, 5000); 
+        }, 1000); 
     }, 20000);
 
     // Toggle traffic light colors for secondary road every 20 seconds
     const secondaryRoadIntervalId = setInterval(() => {
       console.log('SecondaryRoadLight: ' + secondaryRoadLight);
-      setSecondaryYellowRoadLight('yellow');
-      setTimeout(() => {
-        setSecondaryYellowRoadLight('green');
-        setSecondaryRoadLight('green');
+        setSecondaryYellowRoadLight('yellow');
         setTimeout(() => {
-          setSecondaryRoadLight('yellow');
-          setSecondaryYellowRoadLight('yellow');
+          setSecondaryYellowRoadLight('green');
+          setSecondaryRoadLight('green');
           setTimeout(() => {
-            setSecondaryRoadLight('red');
-            setSecondaryYellowRoadLight('red');
-          }, 1000);
-        }, 5000); 
-      }, 2000); 
+            setSecondaryRoadLight('yellow');
+            setSecondaryYellowRoadLight('yellow');
+            setTimeout(() => {
+              setSecondaryRoadLight('red');
+              setSecondaryYellowRoadLight('red');
+            }, 1000);
+          }, 5000); 
+        }, 2000); 
     }, 20000);
 
     // Cleanup intervals when component unmounts
@@ -194,29 +191,63 @@ const App: FC = () => {
   }, [mainRoadLight, secondaryRoadLight, mainYellowLight, secondaryYellowLight]);
 
   const handlePedestrianButtonClick = () => {
-    const clearLightsInterval = () => {
-      clearInterval(checkLightsInterval);
-    };
+  
+      // Set new states for the lights
+      setTimeout(() => {
+        if(mainRoadLightRef.current === 'green') {
+          setMainRoadLight('yellow');
+          setMainYellowLight('yellow');
+        } else if (mainRoadLightRef.current === 'yellow') {
+          setMainRoadLight('red');
+        } else {
+          setMainRoadLight('red');
+          setMainYellowLight('red');
+        }
+        
+        if(secondaryRoadLightRef.current === 'green'){
+          setSecondaryYellowRoadLight('yellow');
+          setSecondaryRoadLight('yellow');
+        }else if(secondaryRoadLightRef.current === 'yellow'){
+          setSecondaryRoadLight('red');
+        } else {
+          setSecondaryYellowRoadLight('red');
+          setSecondaryRoadLight('red');
+        }
 
-    const checkLightsInterval = setInterval(() => {
+        setTimeout(() => {
+          setPedestrianRoadLight('green');
+          setMainRoadLight('red');
+          setMainYellowLight('red');
+          setSecondaryRoadLight('red');
+          setSecondaryYellowRoadLight('red');
+          setTimeout(() => {
+            setMainYellowLight('yellow');
+            setTimeout(() => {
+              setMainYellowLight('green');
+              setMainRoadLight('green');
+              setPedestrianRoadLight('red');
+            }, 2000);
+          }, 3000);
+        }, 1000);
+      }, 5000);
+
       //console.log('MainRoadLight: ' + mainRoadLight);
       //console.log('SecondaryRoadLight: ' + secondaryRoadLight);
-      if (mainRoadLightRef.current === 'red' && secondaryRoadLightRef.current === 'red') {
+      /*if (mainRoadLightRef.current === 'red' && secondaryRoadLightRef.current === 'red') {
         //console.log('Current Main Road Light:', mainRoadLightRef.current, secondaryRoadLightRef.current);
         if (secondaryYellowLightRef.current !== 'yellow' && mainYellowLightRef.current !== 'yellow') {
           setPedestrianRoadLight('green');
           // Keep pedestrian light green for 3 seconds
           setTimeout(() => {
             setPedestrianRoadLight('red');
-            clearLightsInterval();
           }, 3000);
         }
       } else {
         setPedestrianRoadLight('red');
-      }
-    }, 1000);
-
-  };
+        // Revert to the original states after 5 second
+    
+      }*/
+    };
 
   const handleSecondaryTraficButtonClick = () => {
     // Save the current state of all lights
@@ -236,6 +267,7 @@ const App: FC = () => {
 
     // Revert to the original states after 5 second
     setTimeout(() => {
+      setSecondaryRoadLight('yellow');
       setSecondaryYellowRoadLight('yellow');
       setMainYellowLight('yellow');
       setTimeout(() => {
