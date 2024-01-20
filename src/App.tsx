@@ -161,13 +161,14 @@ const App: FC = () => {
               setMainRoadLight('green');
               setMainYellowLight('green');
             }, 2000);
-          }, 5000); 
-        }, 1000); 
+          }, 10000); 
+        }, 2000); 
     }, 20000);
 
     // Toggle traffic light colors for secondary road every 20 seconds
     const secondaryRoadIntervalId = setInterval(() => {
       console.log('SecondaryRoadLight: ' + secondaryRoadLight);
+      setTimeout(() => {
         setSecondaryYellowRoadLight('yellow');
         setTimeout(() => {
           setSecondaryYellowRoadLight('green');
@@ -181,6 +182,7 @@ const App: FC = () => {
             }, 1000);
           }, 5000); 
         }, 2000); 
+      }, 3000); 
     }, 20000);
 
     // Cleanup intervals when component unmounts
@@ -215,19 +217,23 @@ const App: FC = () => {
         }
 
         setTimeout(() => {
-          setPedestrianRoadLight('green');
           setMainRoadLight('red');
           setMainYellowLight('red');
           setSecondaryRoadLight('red');
           setSecondaryYellowRoadLight('red');
           setTimeout(() => {
-            setMainYellowLight('yellow');
+            setPedestrianRoadLight('green');
             setTimeout(() => {
-              setMainYellowLight('green');
-              setMainRoadLight('green');
               setPedestrianRoadLight('red');
-            }, 2000);
-          }, 3000);
+              setTimeout(() => {
+                setMainYellowLight('yellow');
+                setTimeout(() => {
+                  setMainYellowLight('green');
+                  setMainRoadLight('green');
+                }, 1000);
+              }, 1000);
+            }, 3000);
+          }, 1000);
         }, 1000);
       }, 5000);
 
@@ -269,12 +275,16 @@ const App: FC = () => {
     setTimeout(() => {
       setSecondaryRoadLight('yellow');
       setSecondaryYellowRoadLight('yellow');
-      setMainYellowLight('yellow');
       setTimeout(() => {
         setSecondaryYellowRoadLight(originalState.secondaryYellow);
-        setMainYellowLight(originalState.mainYellow);
         setSecondaryRoadLight(originalState.secondary);
-        setMainRoadLight(originalState.main);
+        setTimeout(() => {
+          setMainYellowLight('yellow');
+          setTimeout(() => {
+            setMainYellowLight(originalState.mainYellow);
+            setMainRoadLight(originalState.main);
+          }, 1000);
+        }, 1000);
       }, 1000);
     }, 3000);
   };
